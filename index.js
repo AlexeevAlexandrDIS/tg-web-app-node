@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 
 
 const token = '7571158884:AAGPyYz6-PZRe0TrQ94lWu1jtuN6Cr604kY';
-const webAppUrl= 'https://6874069850b04e.lhr.life'
+const webAppUrl= 'https://gamemakesite.netlify.app'
 
 const bot = new TelegramBot(token, {polling: true});
 const app = express();
