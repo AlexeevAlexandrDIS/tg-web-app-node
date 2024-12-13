@@ -97,22 +97,23 @@ bot.on('message', async(msg) => {
             // }
         });
     }
-    // if(msg?.web_app_data?.data){
-    //     try {
-    //         const data = JSON.parse(msg?.web_app_data?.data)
-    //
-    //         await bot.sendMessage(chatId, "Спасибо за обратную связь");
-    //         await bot.sendMessage(chatId, "Ваша страна: " + data?.country);
-    //         await bot.sendMessage(chatId, "Ваша улица: " + data?.street);
-    //
-    //         setTimeout(async ()=>{
-    //             await bot.sendMessage("Всю информацию вы получите в этом чате");
-    //         }, 3000)
-    //     }
-    //     catch(error){
-    //         console.log(error);
-    //     }
-    // }
+    if(msg?.web_app_data?.data){
+        try {
+            const data = JSON.parse(msg?.web_app_data?.data)
+
+            await bot.sendMessage(chatId, "Спасибо за обратную связь");
+            await bot.sendMessage(chatId, "Ваши ФИО: " + data?.name + " " + data?.lastName + " " + data?.middleName);
+            await bot.sendMessage(chatId, "Ваша страна: " + data?.country);
+            await bot.sendMessage(chatId, "Ваша улица: " + data?.street);
+
+            setTimeout(async ()=>{
+                await bot.sendMessage("Всю информацию вы получите в этом чате");
+            }, 15)
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
     // if (msg.text === '/start') {
     //     userState[chatId] = { stage: 'waiting_for_budget' };
     //     bot.sendMessage(chatId, 'Привет! Введите ваш бюджет для сборки ПК (в рублях)');
