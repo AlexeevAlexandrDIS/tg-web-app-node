@@ -87,12 +87,14 @@ bot.on('message', async(msg) => {
                 ]
             }
         });
-        await bot.sendMessage(chatId, "Заходи в наш интернет магазин по кнопке ниже",{
-            reply_markup:{
-                inline_keyboard: [
-                    [{text: 'Сделать заказ', web_app: {url: webAppUrl}}]
-                ]
-            }
+        await bot.sendMessage(chatId, "Приветствую! Давайте я помогу вам со сборкой вашего будущего компьютера." +
+            " Пожалуйста, используйте команды, которые подходят вам по бюджету: /pcbuild_30000, /pcbuild_55000, /pcbuild_120000," +
+            " где 30000, 55000 и 120000 - это ваш бюджет в рублях.",{
+            // reply_markup:{
+            //     inline_keyboard: [
+            //         [{text: 'Сделать заказ', web_app: {url: webAppUrl}}]
+            //     ]
+            // }
         });
     }
     // if(msg?.web_app_data?.data){
