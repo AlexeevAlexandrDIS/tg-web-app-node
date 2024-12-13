@@ -80,7 +80,7 @@ bot.on('message', async(msg) => {
     console.log('Получено сообщение:', msg.text);
 
     if(text === '/start'){
-        await bot.sendMessage(chatId, "Ниже появится кнопка, заполните форму",{
+        await bot.sendMessage(chatId, "Ниже появится кнопка, заполните форму вашей контактной информации",{
             reply_markup:{
                 keyboard: [
                     [{text: 'Заполнить форму', web_app: {url: webAppUrl  + '/form'}}]
