@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const express = require('express');
 const cors = require('cors');
 const mongoose = require("mongoose");
-
+const { MongoClient } = require("mongodb");
 
 const token = '7571158884:AAGPyYz6-PZRe0TrQ94lWu1jtuN6Cr604kY';
 const webAppUrl= 'https://gamemakesite.netlify.app'
@@ -11,16 +11,43 @@ const bot = new TelegramBot(token, {polling: true});
 const app = express();
 const userState = {};
 
-const connectDB = async () => {
+// const connectDB = async () => {
+//
+//     mongoose.connection.on(`connected`,() =>{
+//         console.log('MongoDB Connected');
+//     })
+//
+//     await mongoose.connect(`mongodb://127.0.0.1:27017`)  ;
+//
+// }
+// connectDB()
 
-    mongoose.connection.on(`connected`,() =>{
-        console.log('MongoDB Connected');
-    })
 
-    await mongoose.connect(`mongodb://127.0.0.1:27017`)  ;
-
-}
-connectDB()
+// async function getClient() {
+//     const username = "admin"; // Логин администратора
+//     const password = "t3mSJUb*"; // Пароль администратора
+//     const host = "nestopquusstog.beget.app"; // Адрес сервера / доменное имя
+//     const database = "admin"; // Имя БД
+//
+//     const uri = `mongodb://${username}:${password}@${host}/${database}`;
+//
+//     const client = new MongoClient(uri);
+//
+//     try {
+//         // Подключаемся к серверу
+//         await client.connect();
+//         console.log("Подключение успешно!");
+//         return client;
+//     } catch (err) {
+//         console.error("Ошибка подключения:", err);
+//         process.exit(1);
+//     }
+// }
+//
+// // Для запуска функции
+// (async () => {
+//     const client = await getClient();
+// })();
 
 app.use(express.json());
 app.use(cors());
@@ -141,28 +168,23 @@ async function findComponentsWithinBudget(budget) {
     return components;
 }
 
-app.post('/web-data', async(req, res) => {
+app.post('/web-data', async (req, res) => {
     const {queryId, products = [], totalPrice} = req.body;
-    try{
+    try {
         await bot.answerWebAppQuery(queryId, {
             type: 'article',
             id: queryId,
             title: 'Успешная покупка',
             input_message_content: {
-                message_text: `Поздравляю с покупкой вы приобрели товар на сумму ${totalPrice},
-                ${products.map(item => item.title).join(', ')}`
-                }
+                message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title).join(', ')}`
+            }
         })
-        return res.status(200).json({})
-    }
-    catch(error){
-
+        return res.status(200).json({});
+    } catch (e) {
         return res.status(500).json({})
-
     }
 })
 
 const PORT = 4000;
 
-app.listen(PORT, () => console.log(`
-            }Listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
