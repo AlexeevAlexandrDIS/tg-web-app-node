@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const { MongoClient } = require("mongodb");
 
 const token = '7571158884:AAGPyYz6-PZRe0TrQ94lWu1jtuN6Cr604kY';
-const webAppUrl= 'https://gamemakesite.netlify.app'
+const webAppUrl= 'https://gamemakebot.netlify.app'
 
 const bot = new TelegramBot(token, {polling: true});
 const app = express();
@@ -87,7 +87,7 @@ bot.on('message', async(msg) => {
                 ]
             }
         });
-        await bot.sendMessage(chatId, "Приветствую! Давайте я помогу вам со сборкой вашего будущего компьютера." +
+        await bot.sendMessage(chatId, "Давайте я помогу вам со сборкой вашего будущего компьютера." +
             " Пожалуйста, используйте команды, которые подходят вам по бюджету: /pcbuild_30000, /pcbuild_55000, /pcbuild_120000," +
             " где 30000, 55000 и 120000 - это ваш бюджет в рублях.",{
             // reply_markup:{
@@ -104,10 +104,10 @@ bot.on('message', async(msg) => {
             await bot.sendMessage(chatId, "Спасибо за обратную связь");
             await bot.sendMessage(chatId, "Ваши ФИО: " + data?.name + " " + data?.lastName + " " + data?.middleName);
             await bot.sendMessage(chatId, "Ваша страна: " + data?.country);
-            await bot.sendMessage(chatId, "Ваша улица: " + data?.street);
+            await bot.sendMessage(chatId, "Ваш адрес: г." + data?.city + ", ул." + data?.street);
 
             setTimeout(async ()=>{
-                await bot.sendMessage("Всю информацию вы получите в этом чате");
+                await bot.sendMessage(chatId, "Всю информацию вы получите в этом чате");
             }, 15)
         }
         catch(error){
@@ -227,11 +227,11 @@ function suggestPcBuild(budget) {
 }
 
 // Функция для обработки сообщений от бота
-bot.onText(/\/pcbuild_(\d+)/, (msg, match) => {
+bot.onText(/\/pcbuild_(\d+)/, async(msg, match) => {
     const chatId = msg.chat.id;
     const budget = parseInt(match[1], 10); // Извлекаем бюджет из команды
     const response = suggestPcBuild(budget);
-    bot.sendMessage(chatId, response,{
+    await bot.sendMessage(chatId, response,{
         reply_markup:{
             inline_keyboard: [
                 [{text: 'Сделать заказ', web_app: {url: webAppUrl}}]
@@ -266,7 +266,7 @@ app.post('/web-data', async (req, res) => {
             id: queryId,
             title: 'Успешная покупка',
             input_message_content: {
-                message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title).join(', ')}`
+                message_text: ` Поздравляю с покупкой, вы приобрели товар на сумму ${totalPrice}, ${products.map(item => item.title + " " + item.description).join(', ')}`
             }
         })
         return res.status(200).json({});
