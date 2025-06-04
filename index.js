@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const { MongoClient } = require("mongodb");
 
 const token = '7571158884:AAGPyYz6-PZRe0TrQ94lWu1jtuN6Cr604kY';
-const webAppUrl= 'https://gamemakebot.netlify.app'
+const webAppUrl= 'https://lucent-cobbler-b435b8.netlify.app/'
 
 const bot = new TelegramBot(token, {polling: true});
 const app = express();
